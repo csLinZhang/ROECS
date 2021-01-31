@@ -80,7 +80,6 @@ This is the website for our paper &quot;<a href="ROECS.pdf">ROECS: A Robust Pipe
 <span lang="en-us"><font face="Calibri" style="font-size: 13pt"> 
 <a href="https://github.com/z619850002/ROECS">Get the code</a></font></span></p>
 
-
 <p>
 <span lang="en-us"><font face="Calibri" style="font-size: 13pt">
 	Use git to clone the repository:
@@ -90,6 +89,36 @@ This is the website for our paper &quot;<a href="ROECS.pdf">ROECS: A Robust Pipe
 <span lang="en-us"><font face="Calibri" color="#0000FF" style="font-size: 13pt">
 	&nbsp &nbsp git clone git@github.com:z619850002/ROECS.git
 </a></font></span></p>
+
+A surround-view system (SVS) usually consists of four to six wide-angle fisheye cameras. These cameras are mounted on the vehicle facing different directions, so as to realize a 360-degree-perception of the surrounding environment around the vehicle. By calibrating the SVS&acutes intrinsics and extrinsics accurately, relative poses between cameras can be determined and then a high-quality surround-view can be synthesized in real time.
+The surround-view cannot only broaden the driver&acutes view to eliminate blind areas, but also can be employed in parking-slot detection, autonomous parking, pedestrian detection and other related driving assistance tasks.
+<br>After being extrinsically calibrated, cameras in the SVS should be fixed to keep extrinsics, which refer to the relative poses among cameras, unchanged. 
+However, collisions, bumps, and even the &quothot expansion and cold contraction&quot effects may destroy the initial spatial structure of the camera system. 
+In this case, if the initial extrinsics are still used and not properly adjusted, in generated surround-views, there will be observable geometric misalignment, reflecting the abnormality of the perception of the SVS.
+<br>When geometric misalignment appears in the synthesized surround-views, prompt correction of the SVS&acutes extrinsics is of great significance for the driving safety.
+But at present, effective online extrinsics correction solutions that can be applied to the SVS are still lacking, and online extrinsics correction solutions are rarely embedded in the commercial products due to the technical immaturity. Thus, drivers usually have to drive to 4S shops for re-calibration to correct inaccurate extrinsics. It is too cumbersome for both users and manufacturers doubtlessly. Many automobile manufactures are also looking for ways to update extrinsics of the SVS in an online manner without re-calibration. To fill such a research gap to some extent, in this paper, we propose an online extrinsics correction pipeline for the SVS, namely ROECS (Robust Online Extrinsics Correction of the Surround-view system).
+
+
+<p>
+<span lang="en-us">
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="correction_sample_1.jpg" width="517" height="327"></font>
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="correction_sample_2.jpg" width="517" height="327"></font>
+</span></p>
+
+
+<hr>
+<p><span lang="en-us"><b><font face="Calibri" size="5">Dataset </font></b></span></p>
+<p>
+<span lang="en-us"><font face="Calibri" style="font-size: 13pt">1. 
+<a href=https://pan.baidu.com/s/1ZQe63Y8y34P1HIsyKETwhA>Download the Dataset</a></font></span></p><p>(pw: 26yo)</p>
+<p>
+<span lang="en-us"><font face="Calibri" style="font-size: 13pt">
+We collected four groups of surround-views, and for each group, there are one hundred frames. 
+Each group of frames corresponds to a specific environmental condition, which are characterized by (1) with rich tex-
+tures, (2) with relatively rich textures, (3) with sparse
+textures, and (4) with obvious mismatched objects, respectively. 
+All experiments mentioned in the paper are based on these data. </font></span></p>
+
 
 
 
@@ -133,7 +162,7 @@ codes are implemented in C++ 11. We have tested the library in Ubuntu 14.04, but
 <span lang="en-us"><font face="Calibri" style="font-size: 13pt">
 This is a graph optimziation library. We use g2o library to perform non-linear optimizations. More details can be found at <a href="https://github.com/RainerKuemmerle/g2o/">https://github.com/RainerKuemmerle/g2o/</a>.  </font></span></p>
 <p>
-<span lang="en-us"><font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="g2o.jpg" width="517" height="257"></font></span></p>
+<span lang="en-us"><font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="g2o.jpg" width="517" height="357"></font></span></p>
 
 <p>
 <span lang="en-us"><font face="Calibri" style="font-size: 13pt">4. 
@@ -144,10 +173,41 @@ Sophus is a Lie algebra library. More details can be found at <a href="https://g
 
 
 
+<hr>
+<p><span lang="en-us"><b><font face="Calibri" size="5">Typical Correction Results</font></b></span></p>
+<p>
+<span lang="en-us"><font face="Calibri" style="font-size: 13pt">Comparison of surround-views before and after extrinsics correction by ROECS in various environments.</font></span></p>
+<p>
+<span lang="en-us">
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="correction_result_1.png" width="517" height="327"></font>
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="correction_result_2.png" width="517" height="327"></font>
+</span></p>
+<p>
+<span lang="en-us">
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="correction_result_3.png" width="517" height="327"></font>
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="correction_result_4.png" width="517" height="327"></font>
+</span></p>
 
 
 <hr>
-<p align="justify"><font face="Calibri">Last update: <span lang="en-us">Mar. 2,
-</span>202<span lang="en-us">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p>
+<p><span lang="en-us"><b><font face="Calibri" size="5">Photometric Errors Before and After the Correction</font></b></span></p>
+<p>
+<span lang="en-us"><font face="Calibri" style="font-size: 13pt">Average photometric errors over all surround-views corresponding to different groups of data.</font></span></p>
+<p>
+<span lang="en-us">
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="photometirc_result_1.png" width="447" height="327"></font>
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="photometirc_result_2.png" width="447" height="327"></font>
+</span></p>
+<p>
+<span lang="en-us">
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="photometirc_result_3.png" width="447" height="327"></font>
+	<font face="Calibri" style="font-size: 13pt"> &nbsp;<img border="0" src="photometirc_result_4.png" width="447" height="327"></font>
+</span></p>
+
+
+
+<hr>
+<p align="justify"><font face="Calibri">Last update: <span lang="en-us">Jan. 31,
+</span>202<span lang="en-us">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p>
 </body>
 </html>
